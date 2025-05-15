@@ -1,0 +1,67 @@
+<div class="products-table-container">
+  <div class="products-header">
+    <div>
+      <h2>Products</h2>
+      <div class="breadcrumb">Home &gt; Products</div>
+    </div>
+    <button class="add-btn">Add Product</button>
+  </div>
+
+  <div class="products-controls">
+    <div>
+      Show
+      <select>
+        <option>10</option>
+        <option>25</option>
+        <option>50</option>
+      </select>
+      Entries
+    </div>
+    <input class="search-input" placeholder="Search" />
+  </div>
+
+  <div class="table-responsive">
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th>Order Id</th>
+          <th>Photo</th>
+          <th>Product name</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Total sales</th>
+          <th>Stock</th>
+          <th>Amount</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.id }}</td>
+          <td>
+            <img
+              *ngIf="product.imageUrl"
+              [src]="product.imageUrl"
+              width="40"
+              height="40"
+            />
+          </td>
+          <td>{{ product.title }}</td>
+          <td>{{ product.category || selectedCategory }}</td>
+          <td>${{ product.price }}</td>
+          <td>{{ product.totalSales || 0 }}</td>
+          <td>{{ product.stock || 0 }}</td>
+          <td>
+            ${{
+              product.amount || product.price * (product.totalSales || 0)
+                | number
+            }}
+          </td>
+          <td>
+            <button class="info-btn">Info <span>&#9660;</span></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

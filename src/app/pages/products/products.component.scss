@@ -1,0 +1,131 @@
+.products-table-container {
+  background: #f8fbff;
+  min-height: 100vh;
+  padding: 32px 24px;
+}
+
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 18px;
+}
+
+.products-header h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: #1a237e;
+}
+
+.breadcrumb {
+  color: #8a8fa7;
+  font-size: 0.98rem;
+  margin-top: 4px;
+}
+
+.add-btn {
+  background: #4285f4;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.add-btn:hover {
+  background: #1a237e;
+}
+
+.products-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.products-controls select {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #bdbdbd;
+  margin: 0 6px;
+}
+
+.search-input {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #e3e6f3;
+  background: #fff;
+  font-size: 1rem;
+  width: 180px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(26, 35, 126, 0.07);
+  overflow: hidden;
+}
+
+.products-table th,
+.products-table td {
+  padding: 16px 12px;
+  text-align: left;
+  border-bottom: 1px solid #f0f2f7;
+  font-size: 1rem;
+}
+
+.products-table th {
+  background: #f8fbff;
+  color: #1a237e;
+  font-weight: 700;
+}
+
+.products-table tr:last-child td {
+  border-bottom: none;
+}
+
+.products-table img {
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.info-btn {
+  background: #eaffea;
+  color: #4caf50;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.2s;
+}
+.info-btn:hover {
+  background: #c8f7c5;
+}
+
+@media (max-width: 900px) {
+  .products-table-container {
+    padding: 12px 2px;
+  }
+  .products-header h2 {
+    font-size: 1.3rem;
+  }
+  .products-table th,
+  .products-table td {
+    padding: 10px 4px;
+    font-size: 0.95rem;
+  }
+}

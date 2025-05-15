@@ -1,0 +1,24 @@
+<div class="orders">
+  <h2>📃 Orders</h2>
+
+  <table class="orders-table">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Customer</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{ order.id }}</td>
+        <td>{{ order.customer }}</td>
+        <td>{{ order.total }} EGP</td>
+        <td>{{ order.status }}</td>
+        <td><button mat-button color="primary">View</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

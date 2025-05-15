@@ -1,0 +1,31 @@
+.settings h2 {
+  margin-bottom: 30px;
+  color: #1a237e;
+}
+
+.setting-item {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(26, 35, 126, 0.08);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 1.1rem;
+}
+
+.setting-item label {
+  font-weight: 600;
+  color: #3949ab;
+}
+
+.setting-item input,
+.setting-item select {
+  margin-left: 12px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #bdbdbd;
+  background: #f4f6f9;
+  font-size: 1rem;
+}

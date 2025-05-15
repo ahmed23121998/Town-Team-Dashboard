@@ -1,0 +1,11 @@
+<div class="customers">
+  <h2>👤 Customers</h2>
+
+  <div class="customer-list">
+    <div class="customer-card" *ngFor="let c of customers">
+      <h3>{{ c.name }}</h3>
+      <p>{{ c.email }}</p>
+      <p>Orders: {{ c.totalOrders }}</p>
+    </div>
+  </div>
+</div>

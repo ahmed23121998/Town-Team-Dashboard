@@ -1,0 +1,9 @@
+<div class="login-box">
+  <h2>🔐 Admin Login</h2>
+  <form (submit)="login(); $event.preventDefault();">
+    <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required />
+    <input type="password" placeholder="Password" [(ngModel)]="password" name="password" required />
+    <button mat-flat-button color="primary" type="submit">Login</button>
+    <p class="error" *ngIf="error">{{ error }}</p>
+  </form>
+</div>

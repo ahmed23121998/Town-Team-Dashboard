@@ -1,0 +1,24 @@
+<div class="dashboard">
+  <h2>📊 Dashboard Overview</h2>
+
+  <div class="stats-grid" *ngIf="stats$ | async as stats">
+    <div class="card">
+      <h3>Orders</h3>
+      <p>{{ stats.ordersCount }}</p>
+    </div>
+    <div class="card">
+      <h3>Products</h3>
+      <p>{{ stats.productsCount }}</p>
+    </div>
+    <div class="card">
+      <h3>Customers</h3>
+      <p>{{ stats.customersCount }}</p>
+    </div>
+    <div class="card">
+      <h3>Revenue</h3>
+      <p>{{ formatCurrency(stats.totalRevenue) }}</p>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="!(stats$ | async)">Loading dashboard data...</div>
+</div>
