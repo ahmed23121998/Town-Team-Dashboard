@@ -1,24 +1,164 @@
-<div class="orders">
-  <h2>📃 Orders</h2>
+<div class="orders-container">
+    <p-toast></p-toast>
+    
+    <p-card>
+        <div class="header-section mb-4">
+            <div class="title-section">
+                <h2>ORDERS</h2>
+            </div>
+        </div>
 
-  <table class="orders-table">
-    <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>Customer</th>
-        <th>Total</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let order of orders">
-        <td>{{ order.id }}</td>
-        <td>{{ order.customer }}</td>
-        <td>{{ order.total }} EGP</td>
-        <td>{{ order.status }}</td>
-        <td><button mat-button color="primary">View</button></td>
-      </tr>
-    </tbody>
-  </table>
+        <div class="table-controls mb-3">
+            <div class="left-controls">
+                <div class="entries-control">
+                    <span>Show</span>
+                    <p-dropdown
+                        [options]="[
+                            {label: '20', value: 20},
+                            {label: '10', value: 10},
+                            {label: '5', value: 5},
+                            {label: '2', value: 2}
+                        ]"
+                        [(ngModel)]="pageSize"
+                        (onChange)="onPageSizeChange($event)"
+                        styleClass="entries-dropdown"
+                    ></p-dropdown>
+                    <span>entries</span>
+                </div>
+            </div>
+            
+            <div class="right-controls">
+                <div class="search-control">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input 
+                            type="text" 
+                            pInputText 
+                            [(ngModel)]="searchTerm"
+                            (input)="onSearch()"
+                            placeholder="Search orders..."
+                        />
+                    </span>
+                </div>
+
+                <div class="status-filter">
+                    <p-dropdown
+                        [options]="[
+                            {label: 'All Statuses', value: 'all'},
+                            {label: 'Pending', value: 'pending'},
+                            {label: 'Processing', value: 'processing'},
+                            {label: 'Shipped', value: 'shipped'},
+                            {label: 'Delivered', value: 'delivered'},
+                            {label: 'Cancelled', value: 'cancelled'}
+                        ]"
+                        [(ngModel)]="statusFilter"
+                        (onChange)="onStatusFilterChange()"
+                        placeholder="Filter by Status"
+                        styleClass="status-dropdown"
+                    ></p-dropdown>
+                    
+                    <button 
+                        pButton 
+                        type="button" 
+                        label="Clear" 
+                        class="p-button-outlined p-button-sm"
+                        (click)="clearFilters()"
+                    ></button>
+                </div>
+            </div>
+        </div>
+
+        <p-table 
+            [value]="paginatedOrders" 
+            [loading]="isLoading"
+            styleClass="p-datatable-orders"
+            [rows]="pageSize"
+            [totalRecords]="totalItems"
+            [paginator]="true"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[2, 5, 10, 20]"
+            [(first)]="first"
+            (onPageChange)="onPageChange($event)"
+            responsiveLayout="scroll"
+        >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Photo</th>
+                    <th>Product Info</th>
+                    <th>Customer Info</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-order>
+                <tr>
+                    <td>
+                        <span class="order-id">{{order.id}}</span>
+                    </td>
+                    <td>
+                        <span class="order-date">{{order.orderDate | date:'medium'}}</span>
+                    </td>
+                    <td class="product-photo-cell">
+                        <div class="product-image-container">
+                            <img [src]="order.products[0]?.image" [alt]="order.products[0]?.name" class="product-thumbnail"/>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="product-info">
+                            <span class="product-name">{{order.products[0]?.name}}</span>
+                            <span class="product-category">{{order.products[0]?.category}}</span>
+                            <span class="product-price">${{order.products[0]?.price}}</span>
+                            <span class="product-quantity">Qty: {{order.products[0]?.quantity}}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="customer-info">
+                            <span class="customer-name">{{order.customerName}}</span>
+                            <span class="customer-email">{{order.customerEmail}}</span>
+                            <span class="customer-phone">{{order.customerPhone}}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="order-total">${{calculateTotalPrice(order)}}</span>
+                    </td>
+                    <td>
+                        <p-tag 
+                            [value]="order.status" 
+                            [severity]="getOrderStatusClass(order.status)"
+                        ></p-tag>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button 
+                                pButton 
+                                type="button" 
+                                [label]="order.status"
+                                class="p-button-sm status-button"
+                                (click)="showStatusOptions($event, order)"
+                            ></button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8" class="text-center p-4">
+                        <div class="empty-message">
+                            <i class="pi pi-inbox"></i>
+                            <span>No orders found</span>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="paginatorright">
+                <div class="pagination-info">
+                    Page {{getCurrentPage()}} of {{getTotalPages()}}
+                </div>
+            </ng-template>
+        </p-table>
+    </p-card>
 </div>

@@ -1,0 +1,174 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .brand-logo {
+      height: 32px;
+      width: auto;
+    }
+
+    .brand-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #3B82F6;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  .nav-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+
+    .search-box {
+      width: 400px;
+
+      input {
+        width: 100%;
+        padding: 0.5rem 2.5rem;
+        border-radius: 9999px;
+        background: #F3F4F6;
+        border: 1px solid transparent;
+        transition: all 0.2s;
+
+        &:focus {
+          background: white;
+          border-color: #3B82F6;
+        }
+      }
+
+      i {
+        color: #6B7280;
+      }
+    }
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .admin-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 9999px;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background: #F3F4F6;
+      }
+
+      .admin-name {
+        font-weight: 500;
+        color: var(--text-color);
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .notifications-panel {
+    width: 320px;
+    max-height: 480px;
+    overflow-y: auto;
+
+    .notif-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--surface-200);
+
+      h3 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-color);
+      }
+    }
+
+    .notif-list {
+      .notif-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+        border-bottom: 1px solid var(--surface-200);
+        transition: background-color 0.2s;
+
+        &:hover {
+          background: var(--surface-100);
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        i {
+          font-size: 1.25rem;
+          color: #3B82F6;
+        }
+
+        .notif-content {
+          flex: 1;
+
+          .notif-title {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.25rem;
+          }
+
+          .notif-message {
+            font-size: 0.875rem;
+            color: var(--text-color-secondary);
+            margin-bottom: 0.5rem;
+          }
+
+          .notif-time {
+            font-size: 0.75rem;
+            color: var(--text-color-secondary);
+          }
+        }
+      }
+    }
+  }
+
+  .p-badge {
+    background: #EF4444;
+  }
+
+  .p-menu {
+    .p-menuitem-link {
+      padding: 0.75rem 1rem;
+
+      .p-menuitem-icon {
+        color: var(--text-color-secondary);
+      }
+
+      .p-menuitem-text {
+        color: var(--text-color);
+      }
+
+      &:hover {
+        background: var(--surface-100);
+      }
+    }
+  }
+} 
