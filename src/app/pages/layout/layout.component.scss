@@ -1,16 +1,14 @@
 .layout-container {
   height: 100vh;
-  background: #1a237e;
-  border-radius: 0 0 30px 0;
 }
 
 .sidenav {
-  width: 260px;
-  background: #1a237e;
+  width: 250px;
+  background: white;
   color: #fff;
-  border-radius: 0 0 30px 0;
+  border-radius: 0;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-  padding-top: 30px;
+  padding-top: 20px;
 }
 
 .logo {
@@ -18,7 +16,7 @@
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 40px;
-  color: #fff;
+  color: #168cbe;
   letter-spacing: 2px;
 }
 
@@ -41,11 +39,13 @@ a[mat-list-item] {
   text-decoration: none;
 }
 
-a[mat-list-item].active,
 a[mat-list-item]:hover {
-  background: #3949ab;
+  background: #f6f6f8;
   color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+a[mat-list-item].active {
+  background: #c0c0e2;
 }
 
 a[mat-list-item] .mat-icon {
@@ -76,4 +76,71 @@ a[mat-list-item] .mat-icon {
 
 .content {
   padding: 30px;
+}
+
+.header button.logout-btn {
+  background: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 22px;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.header button.logout-btn:hover {
+  background: #d32f2f;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px 0 32px;
+  background: transparent;
+}
+
+.logo-mstore {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2196f3;
+  letter-spacing: 1px;
+}
+.logo-mstore .logo-m {
+  color: #1976d2;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.theme-toggle {
+  background: #fff;
+  border: 1.5px solid #e3e6f3;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.user-info img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.user-info .role {
+  color: #888;
+  font-size: 0.95rem;
+  font-weight: 400;
 }

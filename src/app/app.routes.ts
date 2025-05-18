@@ -2,31 +2,8 @@ import { Routes } from '@angular/router';
 import { LayoutComponent } from './pages/layout/layout.component';
 
 export const appRoutes: Routes = [
-  {
-    path: '',
-    component: LayoutComponent,
-    children: [
-      {
-        path: 'dashboard',
-        loadComponent: () =>
-          import('./pages/dashboard/dashboard.component').then(
-            (m) => m.DashboardComponent
-          ),
-      },
-      {
-        path: 'orders',
-        loadComponent: () =>
-          import('./pages/orders/orders.component').then(
-            (m) => m.OrdersComponent
-          ),
-      },
-      {
-        path: 'customers',
-        loadComponent: () =>
-          import('./pages/customers/customers.component').then(
-            (m) => m.CustomersComponent
-          ),
-      },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', component: LayoutComponent, children: [
       {
         path: 'products',
         loadComponent: () =>
@@ -41,7 +18,6 @@ export const appRoutes: Routes = [
             (m) => m.SettingsComponent
           ),
       },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
   {

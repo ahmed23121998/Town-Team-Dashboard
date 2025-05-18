@@ -1,29 +1,56 @@
 <mat-sidenav-container class="layout-container">
   <mat-sidenav mode="side" opened class="sidenav">
-    <div class="logo">M STORE</div>
+    <div class="logo"><span class="logo-m">Town</span>-Team</div>
     <mat-nav-list>
-      <a mat-list-item routerLink="/dashboard" routerLinkActive="active"
-        >🏠 Dashboard</a
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
+        <mat-icon>dashboard</mat-icon>
+        Dash Board
+      </a>
+      <a mat-list-item routerLink="/orders" routerLinkActive="active">
+        <mat-icon>shopping_cart</mat-icon>
+        Orders
+      </a>
+      <a mat-list-item routerLink="/customers" routerLinkActive="active">
+        <mat-icon>people</mat-icon>
+        Categories
+      </a>
+      <a mat-list-item routerLink="/products" routerLinkActive="active">
+        <mat-icon>inventory_2</mat-icon>
+        Products
+      </a>
+      <a
+        mat-list-item
+        routerLink="/settings"
+        routerLinkActive="active"
+        class="settings-link"
       >
-      <a mat-list-item routerLink="/orders" routerLinkActive="active"
-        >📦 Orders</a
-      >
-      <a mat-list-item routerLink="/customers" routerLinkActive="active"
-        >👤 Customers</a
-      >
-      <a mat-list-item routerLink="/products" routerLinkActive="active"
-        >🛒 Products</a
-      >
-      <a mat-list-item routerLink="/settings" routerLinkActive="active"
-        >⚙️ Settings</a
-      >
+        <mat-icon>settings</mat-icon>
+        Settings
+      </a>
+      <a mat-list-item routerLink="/login" class="logout-link">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </a>
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content class="main-content">
-    <header class="header">
-      <div class="title">Admin Dashboard</div>
-      <button mat-button color="warn" routerLink="/login">Logout</button>
+    <header *ngIf="!isLoginPage" class="main-header">
+      <div class="logo-mstore"><span class="logo-m">M.</span>store</div>
+      <div class="header-actions">
+        <button class="theme-toggle" (click)="toggleTheme()">
+          <mat-icon>{{
+            (isDarkMode$ | async) ? "light_mode" : "dark_mode"
+          }}</mat-icon>
+        </button>
+        <span class="user-info">
+          <img [src]="userImage" alt="User" />
+          <span>
+            {{ userEmail }}<br />
+            <span class="role">Admin</span>
+          </span>
+        </span>
+      </div>
     </header>
     <main class="content">
       <router-outlet></router-outlet>

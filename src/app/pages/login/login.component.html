@@ -1,9 +1,47 @@
-<div class="login-box">
-  <h2>🔐 Admin Login</h2>
-  <form (submit)="login(); $event.preventDefault();">
-    <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required />
-    <input type="password" placeholder="Password" [(ngModel)]="password" name="password" required />
-    <button mat-flat-button color="primary" type="submit">Login</button>
-    <p class="error" *ngIf="error">{{ error }}</p>
-  </form>
+<div class="login-container">
+  <div class="login-left">
+    <div class="login-logo">
+      <img src="assets/login.png" alt="Logo" />
+    </div>
+    <h2 class="login-title">Welcome Back</h2>
+
+    <form
+      (submit)="login(); $event.preventDefault()"
+      autocomplete="on"
+      #loginForm="ngForm"
+    >
+      <!-- Email Field -->
+      <div class="input-group">
+        <input
+          type="email"
+          placeholder="Email"
+          [(ngModel)]="email"
+          name="email"
+          required
+        />
+      </div>
+
+      <!-- Password Field -->
+      <div class="input-group password-group">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          placeholder="Password"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+        <span
+          class="input-icon password-toggle"
+          (click)="showPassword = !showPassword"
+        >
+          <mat-icon>{{
+            showPassword ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </span>
+      </div>
+
+      <button class="login-btn" type="submit">Login</button>
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </form>
+  </div>
 </div>

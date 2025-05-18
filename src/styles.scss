@@ -1,19 +1,464 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.dev/guide/theming
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
 html {
-  @include mat.theme((
-    color: (
-      theme-type: light,
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
-}/* You can add global styles to this file, and also import other style files */
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+} /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+  --bg-main: #f4f6fa;
+  --bg-card: #fff;
+  --text-main: #222;
+  --text-secondary: #666;
+  --card-shadow: 0 4px 24px rgba(33, 150, 243, 0.07);
+  --primary: #2196f3;
+  --primary-dark: #1976d2;
+  --border: #e3e6f3;
+  --icon: #1976d2;
+}
+
+body.dark-theme {
+  --bg-main: #181c25;
+  --bg-card: #23283a;
+  --text-main: #f1f1f1;
+  --text-secondary: #b0b4bb;
+  --card-shadow: 0 4px 24px rgba(33, 150, 243, 0.03);
+  --primary: #90caf9;
+  --primary-dark: #1976d2;
+  --border: #333a4d;
+  --icon: #90caf9;
+}
+
+body,
+.main-content,
+.content {
+  background: var(--bg-main) !important;
+  color: var(--text-main) !important;
+}
+
+.settings-card,
+.dashboard-card,
+.mat-card {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  box-shadow: var(--card-shadow) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.dashboard-title {
+  color: var(--text-main) !important;
+}
+
+.card-title,
+.dashboard-overview {
+  color: var(--text-secondary) !important;
+}
+
+a,
+.change-password-link {
+  color: var(--primary);
+}
+body.dark-theme a,
+body.dark-theme .change-password-link {
+  color: var(--primary) !important;
+}
+
+.mat-icon {
+  color: var(--icon) !important;
+}
+
+input,
+.form-group input[type="email"],
+.form-group input[type="password"] {
+  border-color: var(--border);
+  background: var(--bg-card);
+  color: var(--text-main);
+}
+body.dark-theme input,
+body.dark-theme .form-group input[type="email"],
+body.dark-theme .form-group input[type="password"] {
+  border-color: #333a4d;
+}
+
+body.dark-theme .main-header,
+body.dark-theme .sidenav {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+}
+body.dark-theme .logo-mstore,
+body.dark-theme .logo-m {
+  color: #90caf9 !important;
+}
+body.dark-theme .header-actions .theme-toggle {
+  background: #23283a !important;
+  border-color: #333a4d !important;
+  color: #f1f1f1 !important;
+}
+body.dark-theme .user-info .role {
+  color: #b0b4bb !important;
+}
+body.dark-theme .mat-nav-list,
+body.dark-theme a[mat-list-item] {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+}
+body.dark-theme a[mat-list-item].active,
+body.dark-theme a[mat-list-item]:hover {
+  background: var(--primary-dark) !important;
+  color: #fff !important;
+}
+body.dark-theme .dialog-content {
+  background: #23283a !important;
+  color: #f1f1f1 !important;
+}
+body.dark-theme .save-btn {
+  background: linear-gradient(
+    90deg,
+    var(--primary-dark) 60%,
+    var(--primary) 100%
+  ) !important;
+  color: #fff !important;
+}
+
+body.login-page,
+body.login-page.dark-theme {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb) !important;
+  color: #222 !important;
+}
+body.login-page .login-container,
+body.login-page .login-left {
+  background: #fff !important;
+  color: #222 !important;
+  box-shadow: 0 4px 32px rgba(33, 150, 243, 0.1) !important;
+}
+body.login-page input,
+body.login-page .input-group input {
+  background: #fff !important;
+  color: #222 !important;
+  border: 1.5px solid #cfd8dc !important;
+}
+body.login-page .login-btn {
+  background: #1976d2 !important;
+  color: #fff !important;
+  border: 1.5px solid #1976d2 !important;
+}
+body.login-page .login-btn:hover {
+  background: #1565c0 !important;
+}
+
+table,
+.mat-table {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+th,
+td,
+.mat-header-cell,
+.mat-cell {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border-bottom: 1px solid var(--border) !important;
+  padding: 12px 16px;
+}
+
+th,
+.mat-header-cell {
+  font-weight: bold;
+  color: var(--primary-dark) !important;
+  background: var(--bg-main) !important;
+}
+
+tr:hover,
+.mat-row:hover {
+  background: rgba(33, 150, 243, 0.07) !important;
+}
+
+body.dark-theme th,
+body.dark-theme .mat-header-cell {
+  color: var(--primary) !important;
+  background: #23283a !important;
+}
+
+body.dark-theme tr:hover,
+body.dark-theme .mat-row:hover {
+  background: #23283a !important;
+}
+
+input,
+textarea,
+select,
+.form-group input,
+.form-group textarea,
+.form-group select {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border: 1.5px solid var(--border) !important;
+  border-radius: 10px;
+  padding: 0.8rem 1.1rem;
+  font-size: 1rem;
+  transition: border 0.2s, background 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--primary) !important;
+  background: #fff !important;
+  color: var(--text-main) !important;
+}
+
+body.dark-theme input:focus,
+body.dark-theme textarea:focus,
+body.dark-theme select:focus {
+  background: #23283a !important;
+  color: var(--text-main) !important;
+}
+
+body.dark-theme .form-group label {
+  color: #b0b4bb !important;
+  font-weight: 500;
+}
+
+body.dark-theme input,
+body.dark-theme .form-group input[type="email"],
+body.dark-theme .form-group input[type="password"] {
+  border: 1.5px solid #4a5066 !important;
+  background: #23283a !important;
+  color: #f1f1f1 !important;
+  font-weight: 500;
+}
+
+body.dark-theme input[readonly] {
+  color: #b0b4bb !important;
+}
+
+body.dark-theme .settings-card {
+  box-shadow: 0 4px 32px rgba(33, 150, 243, 0.1) !important;
+  border: 1.5px solid #333a4d !important;
+}
+
+body.dark-theme .form-group input:focus {
+  border-color: #90caf9 !important;
+  background: #23283a !important;
+}
+
+body.dark-theme .modal,
+body.dark-theme .dialog-content,
+body.dark-theme .mat-dialog-container {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  box-shadow: 0 4px 32px rgba(33, 150, 243, 0.1) !important;
+  border-radius: 16px !important;
+}
+
+body.dark-theme .modal-title,
+body.dark-theme .dialog-content h2,
+body.dark-theme .mat-dialog-title {
+  color: var(--primary) !important;
+  font-weight: bold;
+  opacity: 1 !important;
+}
+
+body.dark-theme .modal input,
+body.dark-theme .modal select,
+body.dark-theme .modal textarea,
+body.dark-theme .dialog-content input,
+body.dark-theme .dialog-content select,
+body.dark-theme .dialog-content textarea,
+body.dark-theme .mat-dialog-container input,
+body.dark-theme .mat-dialog-container select,
+body.dark-theme .mat-dialog-container textarea {
+  background: #23283a !important;
+  color: #f1f1f1 !important;
+  border: 1.5px solid #4a5066 !important;
+  font-weight: 500;
+}
+
+body.dark-theme .modal button,
+body.dark-theme .dialog-content button,
+body.dark-theme .mat-dialog-actions button {
+  color: #fff !important;
+  border: none !important;
+}
+
+body.dark-theme .modal .save-btn,
+body.dark-theme .dialog-content .save-btn,
+body.dark-theme .mat-dialog-actions .save-btn {
+  background: linear-gradient(
+    90deg,
+    var(--primary-dark) 60%,
+    var(--primary) 100%
+  ) !important;
+  color: #fff !important;
+}
+
+body.dark-theme .modal .cancel-btn,
+body.dark-theme .dialog-content .cancel-btn,
+body.dark-theme .mat-dialog-actions .cancel-btn {
+  background: #b0b4bb !important;
+  color: #23283a !important;
+}
+
+body.dark-theme .modal input::placeholder,
+body.dark-theme .dialog-content input::placeholder,
+body.dark-theme .mat-dialog-container input::placeholder {
+  color: #b0b4bb !important;
+  opacity: 1;
+}
+
+body .modal,
+body .dialog-content,
+body .mat-dialog-container {
+  max-width: 420px !important;
+  width: 95vw !important;
+  padding: 32px 28px 24px 28px !important;
+  border-radius: 18px !important;
+  margin: auto;
+}
+
+body .modal input,
+body .modal select,
+body .modal textarea,
+body .dialog-content input,
+body .dialog-content select,
+body .dialog-content textarea,
+body .mat-dialog-container input,
+body .mat-dialog-container select,
+body .mat-dialog-container textarea {
+  width: 100% !important;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 1.08rem;
+  padding: 1.1rem 1.2rem;
+  margin-bottom: 18px;
+  box-sizing: border-box;
+}
+
+body .modal button,
+body .dialog-content button,
+body .mat-dialog-actions button {
+  min-width: 100px;
+  font-size: 1.08rem;
+  padding: 0.7rem 0;
+  border-radius: 8px;
+  margin: 0 8px 0 0;
+}
+
+body .modal .dialog-actions,
+body .dialog-content .dialog-actions,
+body .mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.sidenav {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  min-height: 100vh;
+  border-top-right-radius: 24px;
+  border-bottom-right-radius: 24px;
+  box-shadow: 2px 0 8px rgba(33, 150, 243, 0.07);
+}
+
+.logo,
+.logo-mstore {
+  color: var(--primary-dark) !important;
+  font-weight: bold;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+.logo-m {
+  color: var(--primary) !important;
+}
+
+.mat-nav-list,
+a[mat-list-item] {
+  background: transparent !important;
+  color: var(--text-main) !important;
+  font-size: 1.13rem;
+  font-weight: 500;
+  border-radius: 12px;
+  margin-bottom: 6px;
+  transition: background 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+a[mat-list-item] .mat-icon {
+  color: var(--primary) !important;
+  font-size: 1.6rem;
+  margin-right: 10px;
+  transition: color 0.2s;
+}
+
+a[mat-list-item].active,
+a[mat-list-item]:hover {
+  background: var(--primary) !important;
+  color: #fff !important;
+}
+a[mat-list-item].active .mat-icon,
+a[mat-list-item]:hover .mat-icon {
+  color: #fff !important;
+}
+
+a[mat-list-item]:not(.active) {
+  color: var(--text-main) !important;
+}
+a[mat-list-item]:not(.active) .mat-icon {
+  color: var(--primary) !important;
+}
+
+body.dark-theme .sidenav {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+}
+body.dark-theme a[mat-list-item] {
+  color: var(--text-main) !important;
+  background: transparent !important;
+}
+body.dark-theme a[mat-list-item].active,
+body.dark-theme a[mat-list-item]:hover {
+  background: var(--primary) !important;
+  color: #fff !important;
+}
+body.dark-theme a[mat-list-item].active .mat-icon,
+body.dark-theme a[mat-list-item]:hover .mat-icon {
+  color: #fff !important;
+}
+body.dark-theme a[mat-list-item]:not(.active) .mat-icon {
+  color: var(--primary) !important;
+}

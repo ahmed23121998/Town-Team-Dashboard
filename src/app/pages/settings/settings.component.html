@@ -1,19 +1,102 @@
-<div class="settings">
-  <h2>⚙️ Settings</h2>
-
-  <div class="setting-item">
-    <label>
-      <mat-slide-toggle [(ngModel)]="darkMode"> Dark Mode </mat-slide-toggle>
-    </label>
+<div class="settings-card">
+  <div class="tabs">
+    <span class="tab active"> Profile <mat-icon>person</mat-icon> </span>
   </div>
 
-  <div class="setting-item">
-    <label>
-      Language:
-      <select [(ngModel)]="language">
-        <option value="en">English</option>
-        <option value="ar">Arabic</option>
-      </select>
-    </label>
+  <form class="profile-form" [formGroup]="profileForm">
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" formControlName="email" [readonly]="true" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" [value]="'********'" [readonly]="true" />
+      <a class="change-password-link" (click)="openChangePasswordDialog()"
+        >Change Password</a
+      >
+    </div>
+  </form>
+</div>
+
+<!-- Change Password Dialog -->
+<div
+  class="dialog-overlay"
+  *ngIf="showPasswordDialog"
+  (click)="closePasswordDialog($event)"
+>
+  <div class="dialog-content" (click)="$event.stopPropagation()">
+    <h2>Change Password</h2>
+    <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+      <div class="form-group">
+        <label>Current Password</label>
+        <div class="password-input">
+          <input
+            [type]="showCurrentPassword ? 'text' : 'password'"
+            formControlName="currentPassword"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="toggleCurrentPassword()"
+          >
+            <mat-icon>{{
+              showCurrentPassword ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>New Password</label>
+        <div class="password-input">
+          <input
+            [type]="showNewPassword ? 'text' : 'password'"
+            formControlName="newPassword"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="toggleNewPassword()"
+          >
+            <mat-icon>{{
+              showNewPassword ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Confirm New Password</label>
+        <div class="password-input">
+          <input
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="toggleConfirmPassword()"
+          >
+            <mat-icon>{{
+              showConfirmPassword ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="dialog-actions">
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="closePasswordDialog()"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="!passwordForm.valid || loading"
+        >
+          Save
+        </button>
+      </div>
+    </form>
   </div>
 </div>
