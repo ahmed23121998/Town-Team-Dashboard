@@ -1,209 +1,213 @@
-<div class="products-table-container">
-  <div class="products-header">
-    <h2>Products</h2>
-    <button class="add-btn" (click)="openAddModal()">Add Product</button>
-  </div>
-
-  <div class="products-controls">
-    <div>
-      Show
-      <select [(ngModel)]="entriesToShow">
-        <option [value]="2">2</option>
-        <option [value]="5">5</option>
-        <option [value]="10">10</option>
-      </select>
+<div class="products-page-box">
+  <div class="products-table-container">
+    <div class="products-header">
+      <h2>Products</h2>
+      <button class="add-btn" (click)="openAddModal()">Add Product</button>
     </div>
 
-    <div>
-      Category
-      <select [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
-        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
-      </select>
-    </div>
+    <div class="products-controls">
+      <div>
+        Show
+        <select [(ngModel)]="entriesToShow">
+          <option [value]="2">2</option>
+          <option [value]="5">5</option>
+          <option [value]="10">10</option>
+        </select>
+      </div>
 
-    <div>
-      DocId
-      <select [(ngModel)]="selectedDocId" (change)="onDocIdChange()">
-        <option *ngFor="let docId of docIds" [value]="docId">
-          {{ docId }}
-        </option>
-      </select>
-    </div>
+      <div>
+        Category
+        <select [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
+          <option *ngFor="let cat of categories" [value]="cat">
+            {{ cat }}
+          </option>
+        </select>
+      </div>
 
-    <div>
-      Subcollection
-      <select
-        [(ngModel)]="selectedSubcollection"
-        (change)="onSubcollectionChange()"
-      >
-        <option *ngFor="let sub of subcollections" [value]="sub">
-          {{ sub }}
-        </option>
-      </select>
-    </div>
+      <div>
+        DocId
+        <select [(ngModel)]="selectedDocId" (change)="onDocIdChange()">
+          <option *ngFor="let docId of docIds" [value]="docId">
+            {{ docId }}
+          </option>
+        </select>
+      </div>
 
-    <input
-      class="search-input"
-      type="search"
-      placeholder="Search"
-      [(ngModel)]="searchTerm"
-    />
-  </div>
-
-  <div class="table-responsive">
-    <table class="products-table">
-      <thead>
-        <tr>
-          <th>Product Id</th>
-          <th>Photo</th>
-          <th>Product name</th>
-          <th>Category</th>
-          <th>Price</th>
-          <th>Stock</th>
-          <th>Quantity</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let product of filteredProducts() | slice : 0 : entriesToShow"
+      <div>
+        Subcollection
+        <select
+          [(ngModel)]="selectedSubcollection"
+          (change)="onSubcollectionChange()"
         >
-          <td>{{ product.id }}</td>
-          <td>
-            <img
-              *ngIf="product.image?.src"
-              [src]="product.image.src"
-              width="50"
-              height="50"
-            />
-          </td>
-          <td>
-            {{
-              product.product?.title ||
-                product.productName ||
-                product.title ||
-                ""
-            }}
-          </td>
-          <td>{{ product.category || selectedCategory }}</td>
-          <td>${{ product.price?.amount }}</td>
-          <td>{{ product.in_stock }}</td>
-          <td>{{ product.quantity }}</td>
-          <td>
-            <div class="action-buttons">
-              <button class="edit-btn" (click)="openEditModal(product)">
-                <span class="material-icons">edit</span> Edit
-              </button>
-              <button class="delete-btn" (click)="deleteProduct(product.id)">
-                <span class="material-icons">delete</span> Delete
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Add Product Modal -->
-  <div
-    class="modal-backdrop"
-    *ngIf="showAddModal"
-    (click)="closeAddModal()"
-  ></div>
-  <div class="modal" *ngIf="showAddModal" (click)="$event.stopPropagation()">
-    <form (submit)="addProductFromModal(); $event.preventDefault()">
-      <h3>Add New Product</h3>
-      <input
-        type="url"
-        placeholder="Image URL"
-        [(ngModel)]="modalForm.imageUrl"
-        name="modalImageUrl"
-        required
-      />
-      <input
-        type="text"
-        placeholder="Product Name"
-        [(ngModel)]="modalForm.productName"
-        name="modalProductName"
-        required
-      />
-      <select [(ngModel)]="modalForm.category" name="modalCategory" required>
-        <option value="" disabled>Select Category</option>
-        <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
-      </select>
-      <input
-        type="number"
-        placeholder="Price"
-        [(ngModel)]="modalForm.price"
-        name="modalPrice"
-        min="0"
-        required
-      />
-      <select [(ngModel)]="modalForm.in_stock" name="modalInStock" required>
-        <option value="" disabled>Select Stock Status</option>
-        <option value="in stock">In Stock</option>
-        <option value="out of stock">Out of Stock</option>
-      </select>
-      <input
-        type="number"
-        placeholder="Quantity"
-        [(ngModel)]="modalForm.quantity"
-        name="modalQuantity"
-        min="0"
-        required
-      />
-      <div class="modal-actions">
-        <button type="submit" class="save-btn">Save</button>
-        <button type="button" class="cancel-btn" (click)="closeAddModal()">
-          Cancel
-        </button>
+          <option *ngFor="let sub of subcollections" [value]="sub">
+            {{ sub }}
+          </option>
+        </select>
       </div>
-    </form>
-  </div>
 
-  <!-- Edit Product Modal -->
-  <div
-    class="modal-backdrop"
-    *ngIf="showEditModal"
-    (click)="closeEditModal()"
-  ></div>
-  <div class="modal" *ngIf="showEditModal" (click)="$event.stopPropagation()">
-    <form (submit)="updateProductFromModal(); $event.preventDefault()">
-      <h3>Edit Product</h3>
       <input
-        type="text"
-        placeholder="Product Name"
-        [(ngModel)]="editForm.productName"
-        name="editProductName"
-        required
+        class="search-input"
+        type="search"
+        placeholder="Search"
+        [(ngModel)]="searchTerm"
       />
-      <input
-        type="number"
-        placeholder="Price"
-        [(ngModel)]="editForm.price"
-        name="editPrice"
-        min="0"
-        required
-      />
-      <select [(ngModel)]="editForm.in_stock" name="editInStock" required>
-        <option value="" disabled>Select Stock Status</option>
-        <option value="in stock">In Stock</option>
-        <option value="out of stock">Out of Stock</option>
-      </select>
-      <input
-        type="number"
-        placeholder="Quantity"
-        [(ngModel)]="editForm.quantity"
-        name="editQuantity"
-        min="0"
-        required
-      />
-      <div class="modal-actions">
-        <button type="submit" class="save-btn">Update</button>
-        <button type="button" class="cancel-btn" (click)="closeEditModal()">
-          Cancel
-        </button>
-      </div>
-    </form>
+    </div>
+
+    <div class="table-responsive">
+      <table class="products-table">
+        <thead>
+          <tr>
+            <th>Product Id</th>
+            <th>Photo</th>
+            <th>Product name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Quantity</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let product of filteredProducts() | slice : 0 : entriesToShow
+            "
+          >
+            <td>{{ product.id }}</td>
+            <td>
+              <img
+                *ngIf="product.image?.src"
+                [src]="product.image.src"
+                width="50"
+                height="50"
+              />
+            </td>
+            <td>
+              {{
+                product.product?.title ||
+                  product.productName ||
+                  product.title ||
+                  ""
+              }}
+            </td>
+            <td>{{ product.category || selectedCategory }}</td>
+            <td>${{ product.price?.amount }}</td>
+            <td>{{ product.in_stock }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="edit-btn" (click)="openEditModal(product)">
+                  <span class="material-icons">edit</span> Edit
+                </button>
+                <button class="delete-btn" (click)="deleteProduct(product.id)">
+                  <span class="material-icons">delete</span> Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div
+      class="modal-backdrop"
+      *ngIf="showAddModal"
+      (click)="closeAddModal()"
+    ></div>
+    <div class="modal" *ngIf="showAddModal" (click)="$event.stopPropagation()">
+      <form (submit)="addProductFromModal(); $event.preventDefault()">
+        <h3>Add New Product</h3>
+        <input
+          type="url"
+          placeholder="Image URL"
+          [(ngModel)]="modalForm.imageUrl"
+          name="modalImageUrl"
+          required
+        />
+        <input
+          type="text"
+          placeholder="Product Name"
+          [(ngModel)]="modalForm.productName"
+          name="modalProductName"
+          required
+        />
+        <input
+          type="number"
+          placeholder="Price"
+          [(ngModel)]="modalForm.price"
+          name="modalPrice"
+          min="0"
+          required
+        />
+        <select [(ngModel)]="modalForm.in_stock" name="modalInStock" required>
+          <option value="" disabled>Select Stock Status</option>
+          <option value="in stock">In Stock</option>
+          <option value="out of stock">Out of Stock</option>
+        </select>
+        <input
+          type="number"
+          placeholder="Quantity"
+          [(ngModel)]="modalForm.quantity"
+          name="modalQuantity"
+          min="0"
+          required
+        />
+        <div class="modal-actions">
+          <button type="submit" class="save-btn">Save</button>
+          <button type="button" class="cancel-btn" (click)="closeAddModal()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div
+      class="modal-backdrop"
+      *ngIf="showEditModal"
+      (click)="closeEditModal()"
+    ></div>
+    <div class="modal" *ngIf="showEditModal" (click)="$event.stopPropagation()">
+      <form (submit)="updateProductFromModal(); $event.preventDefault()">
+        <h3>Edit Product</h3>
+        <input
+          type="text"
+          placeholder="Product Name"
+          [(ngModel)]="editForm.productName"
+          name="editProductName"
+          required
+        />
+        <input
+          type="number"
+          placeholder="Price"
+          [(ngModel)]="editForm.price"
+          name="editPrice"
+          min="0"
+          required
+        />
+        <select [(ngModel)]="editForm.in_stock" name="editInStock" required>
+          <option value="" disabled>Select Stock Status</option>
+          <option value="in stock">In Stock</option>
+          <option value="out of stock">Out of Stock</option>
+        </select>
+        <input
+          type="number"
+          placeholder="Quantity"
+          [(ngModel)]="editForm.quantity"
+          name="editQuantity"
+          min="0"
+          required
+        />
+        <div class="modal-actions">
+          <button type="submit" class="save-btn">Update</button>
+          <button type="button" class="cancel-btn" (click)="closeEditModal()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <p-toast position="top-center"></p-toast>
   </div>
 </div>

@@ -25,7 +25,7 @@
 }
 
 .tab.active {
-  color: #2196f3;
+  color: rgb(18, 194, 210);
   font-weight: 600;
   font-size: 1.18rem;
   width: 100%;
@@ -299,4 +299,59 @@
       }
     }
   }
+}
+
+.custom-dark-form {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 10px 20px;
+  background: #23283a !important;
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.custom-dark-form input,
+.custom-dark-form select {
+  padding: 12px 14px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff !important;
+  color: #23283a !important;
+  transition: border-color 0.3s;
+}
+
+.custom-dark-form input:focus,
+.custom-dark-form select:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
+.custom-dark-form button {
+  padding: 10px 18px;
+  border: none;
+  background-color: #1976d2;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.custom-dark-form button:hover {
+  background-color: #125ea9;
+}
+
+.custom-dark-form button[type="button"] {
+  background-color: #f44336;
+  margin-left: 10px;
+}
+
+.custom-dark-form button[type="button"]:hover {
+  background-color: #c0392b;
 }
