@@ -109,10 +109,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   toggleTheme() {
     this.themeService.toggleTheme();
-    document.body.classList.toggle(
-      'dark-theme',
-      !document.body.classList.contains('dark-theme')
-    );
+    if (typeof document !== 'undefined') {
+      document.body.classList.toggle(
+        'dark-theme',
+        !document.body.classList.contains('dark-theme')
+      );
+    }
   }
 
   openChangePasswordDialog() {

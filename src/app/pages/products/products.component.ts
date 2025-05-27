@@ -76,14 +76,16 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadDocIdsForCollection(this.selectedCategory);
     // دعم استقبال التحديثات من صفحة التصنيفات
-    (window as any).updateProductsCategories = (cats: string[]) => {
-      this.categories = cats;
-      // إعادة تحميل الداتا إذا تغيرت الكاتيجوري المختارة
-      if (!this.categories.includes(this.selectedCategory)) {
-        this.selectedCategory = this.categories[0];
-        this.loadDocIdsForCollection(this.selectedCategory);
-      }
-    };
+    if (typeof window !== 'undefined') {
+      (window as any).updateProductsCategories = (cats: string[]) => {
+        this.categories = cats;
+        // إعادة تحميل الداتا إذا تغيرت الكاتيجوري المختارة
+        if (!this.categories.includes(this.selectedCategory)) {
+          this.selectedCategory = this.categories[0];
+          this.loadDocIdsForCollection(this.selectedCategory);
+        }
+      };
+    }
   }
 
   ngOnDestroy() {

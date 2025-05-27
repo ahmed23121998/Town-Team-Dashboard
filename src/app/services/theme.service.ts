@@ -16,7 +16,9 @@ export class ThemeService {
     if (this.isBrowser) {
       this.isDarkMode.next(false);
       this.setTheme(false);
-      localStorage.setItem('theme', 'light');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('theme', 'light');
+      }
     }
   }
 
@@ -26,7 +28,9 @@ export class ThemeService {
 
     if (this.isBrowser) {
       this.setTheme(newTheme);
-      localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+      }
     }
   }
 
@@ -36,10 +40,14 @@ export class ThemeService {
     const currentUrl = this.router.url;
 
     if (currentUrl.includes('login')) {
-      document.body.classList.remove('dark-theme');
+      if (typeof document !== 'undefined') {
+        document.body.classList.remove('dark-theme');
+      }
       return;
     }
 
-    document.body.classList.toggle('dark-theme', isDark);
+    if (typeof document !== 'undefined') {
+      document.body.classList.toggle('dark-theme', isDark);
+    }
   }
 }

@@ -34,16 +34,22 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-      document.body.classList.add('login-page');
-      // إزالة الوضع الليلي عند الدخول لصفحة تسجيل الدخول
-      document.body.classList.remove('dark-theme');
-      localStorage.setItem('theme', 'light');
+      if (typeof document !== 'undefined') {
+        document.body.classList.add('login-page');
+        // إزالة الوضع الليلي عند الدخول لصفحة تسجيل الدخول
+        document.body.classList.remove('dark-theme');
+      }
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('theme', 'light');
+      }
     }
   }
 
   ngOnDestroy() {
     if (isPlatformBrowser(this.platformId)) {
-      document.body.classList.remove('login-page');
+      if (typeof document !== 'undefined') {
+        document.body.classList.remove('login-page');
+      }
     }
   }
 
