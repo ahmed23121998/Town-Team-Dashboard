@@ -1,7 +1,8 @@
 .products-table-container {
-  max-width: 1000px;
-  margin: 20px auto;
-  padding: 0 15px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  padding: 1.5rem;
 }
 
 .products-header {
@@ -12,21 +13,27 @@
 
   h2 {
     margin: 0;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.5rem;
   }
 
   .add-btn {
-    background-color: #4caf50;
-    border: none;
-    color: white;
-    padding: 8px 15px;
+    background: var(--primary) !important;
+    color: #5b5858 !important;
+    border: none !important;
+    padding: 6px;
+    font-size: 1rem;
+    border-radius: 8px;
     cursor: pointer;
-    border-radius: 4px;
     font-weight: bold;
     transition: background-color 0.3s ease;
-
-    &:hover {
-      background-color: #45a049;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .add-btn:hover {
+    background-color: #96b9dc !important;
   }
 }
 
@@ -56,22 +63,41 @@
 
 .products-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+  border-radius: 16px;
+  overflow: hidden;
+  font-size: 1rem;
+  box-shadow: none;
 
   thead {
-    background-color: #f2f2f2;
+    background: #232b3b;
+    color: #90caf9;
+    font-weight: 700;
   }
 
   th,
   td {
+    padding: 16px 18px;
     text-align: left;
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-    font-size: 14px;
+    background: transparent;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border);
+    font-size: 1rem;
+  }
+
+  tbody tr {
+    background: transparent;
+    transition: background-color 0.25s;
+  }
+
+  tbody tr:hover {
+    background-color: #23283a;
   }
 
   img {
-    border-radius: 4px;
+    border-radius: 8px;
   }
 
   .action-buttons {
@@ -81,29 +107,40 @@
     button {
       border: none;
       padding: 5px 10px;
-      border-radius: 4px;
+      border-radius: 10px;
       cursor: pointer;
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
 
       &.edit-btn {
-        background-color: #2196f3;
-        color: white;
+        background: var(--primary) !important;
+        color: #5b5858 !important;
+        border: none !important;
+        padding: 6px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        &:hover {
-          background-color: #1976d2;
-        }
+      &.edit-btn:hover {
+        background-color: #96b9dc !important;
       }
 
       &.delete-btn {
         background-color: #f44336;
-        color: white;
-
-        &:hover {
-          background-color: #d32f2f;
-        }
+        color: hsl(0, 25%, 98%) !important;
+        border: none !important;
+        border-radius: 10px;
+        padding: 6px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      &.delete-btn:hover {
+        background-color: #c0392b !important;
       }
     }
   }
@@ -176,4 +213,157 @@
       }
     }
   }
+}
+
+:host ::ng-deep {
+  .custom-toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 300px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 0.5rem;
+    z-index: 1000;
+    animation: slideDown 0.3s ease-out;
+
+    @keyframes slideDown {
+      from {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+      }
+      to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+      }
+    }
+
+    .p-toast-message {
+      border: none;
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+    }
+
+    .p-toast-message-content {
+      padding: 0;
+    }
+
+    .p-toast-message-icon {
+      font-size: 1.5rem;
+    }
+
+    .p-toast-summary {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .p-toast-detail {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+    }
+
+    &.p-toast-message-success {
+      border-left: 4px solid #22c55e;
+    }
+
+    &.p-toast-message-error {
+      border-left: 4px solid #ef4444;
+    }
+  }
+}
+
+.custom-dark-form {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 10px 20px;
+  background: #23283a !important;
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.custom-dark-form input,
+.custom-dark-form select {
+  padding: 12px 14px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff !important;
+  color: #23283a !important;
+  transition: border-color 0.3s;
+}
+
+.custom-dark-form input:focus,
+.custom-dark-form select:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
+.custom-dark-form button {
+  padding: 10px 18px;
+  border: none;
+  background-color: #1976d2;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.custom-dark-form button:hover {
+  background-color: #125ea9;
+}
+
+.custom-dark-form button[type="button"] {
+  background-color: #f44336;
+  margin-left: 10px;
+}
+
+.custom-dark-form button[type="button"]:hover {
+  background-color: #c0392b;
+}
+
+.products-page-box {
+  background: var(--bg-card);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(33, 150, 243, 0.1);
+  // padding: 36px 32px 32px 32px;
+  // margin: 40px auto;
+  // max-width: 1400px;
+  // min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .products-page-box {
+    padding: 18px 6px;
+  }
+}
+
+// الوضع الليلي
+body.dark-theme .products-table-container {
+  background: #1e1e2f !important;
+  box-shadow: 0 8px 20px rgba(33, 150, 243, 0.07) !important;
+}
+body.dark-theme .products-table thead tr {
+  background: #232b3b !important;
+  color: #90caf9 !important;
+}
+body.dark-theme .products-table th,
+body.dark-theme .products-table td {
+  background: transparent !important;
+  color: #e3f6fa !important;
+  border-bottom: 1px solid #232b3b !important;
+}
+body.dark-theme .products-table tbody tr:hover {
+  background-color: #23283a !important;
 }

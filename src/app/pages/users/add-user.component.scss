@@ -1,0 +1,371 @@
+// Variables
+$primary: #1976d2;
+$primary-dark: #125ea9;
+$danger: #f44336;
+$danger-dark: #c0392b;
+$text-main: var(--text-main);
+$text-secondary: var(--text-secondary);
+$bg-card: var(--bg-card);
+$border: var(--border);
+$card-shadow: var(--card-shadow);
+
+// Mixins
+@mixin input-style {
+  background: $bg-card !important;
+  color: $text-main !important;
+  border: 1.5px solid $border !important;
+  border-radius: 10px;
+  font-size: 1rem;
+  padding: 14px 16px;
+  font-weight: 500;
+  transition: border 0.2s, background 0.2s;
+}
+
+@mixin button-style($bg, $hover-bg) {
+  background-color: $bg !important;
+  color: #fff !important;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: $hover-bg !important;
+  }
+
+  &:disabled {
+    background-color: #a0bde7 !important;
+    cursor: not-allowed;
+  }
+}
+
+// Base Form
+.add-user-form {
+  background: $bg-card !important;
+  color: $text-main !important;
+  border-radius: 16px;
+  box-shadow: $card-shadow !important;
+  padding: 24px 18px;
+  margin: 32px auto;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  input,
+  select {
+    @include input-style;
+
+    &::placeholder {
+      color: $text-secondary !important;
+      opacity: 1;
+    }
+
+    &:focus {
+      border-color: $primary-dark !important;
+      outline: none;
+    }
+  }
+
+  button {
+    width: 100%;
+    @include button-style($primary-dark, $primary);
+
+    &[type="button"] {
+      background-color: $danger !important;
+      margin-left: 10px;
+
+      &:hover {
+        background-color: $danger-dark !important;
+      }
+    }
+  }
+}
+
+// Table
+.user-table {
+  width: 100%;
+  margin: 40px auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: $bg-card;
+  border-radius: 16px;
+  box-shadow: $card-shadow;
+  font-size: 1rem;
+  overflow: hidden;
+
+  thead tr {
+    background: #232b3b;
+    color: #90caf9;
+    font-weight: 700;
+  }
+
+  th,
+  td {
+    padding: 16px 18px;
+    text-align: left;
+    background: transparent;
+    color: $text-main;
+    border-bottom: 1px solid $border;
+  }
+
+  tbody tr {
+    transition: background-color 0.25s;
+
+    &:hover {
+      background-color: #23283a;
+    }
+  }
+}
+
+// Filters
+.filters {
+  max-width: 800px;
+  margin: 20px auto 30px auto;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+
+  input,
+  select {
+    @include input-style;
+    border-radius: 8px;
+
+    &::placeholder {
+      color: $text-secondary !important;
+    }
+
+    &:focus {
+      border-color: $primary;
+      outline: none;
+    }
+  }
+}
+
+// Buttons
+.toggle-users-btn {
+  @include button-style($primary, $primary-dark);
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+}
+
+.edit-btn {
+  background: var(--primary) !important;
+  color: #5b5858 !important;
+  border: none !important;
+  padding: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  margin-right: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover {
+  background-color: #96b9dc !important;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: hsl(0, 25%, 98%) !important;
+  border: none !important;
+  border-radius: 10px;
+  padding: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b !important;
+}
+
+// Action Buttons
+.action-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+// Messages
+.message-success {
+  background: #d0f0d0;
+  padding: 10px;
+  color: #2e7d32;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.message-error {
+  background: #fdd;
+  padding: 10px;
+  color: #d32f2f;
+  border-radius: 4px;
+  text-align: center;
+}
+
+// Modal Styles
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  background: white;
+  padding: 20px;
+  border-radius: 6px;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 7px 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    .save-btn {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 7px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #45a049;
+      }
+    }
+
+    .cancel-btn {
+      background-color: #ccc;
+      border: none;
+      padding: 7px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #b3b3b3;
+      }
+    }
+  }
+}
+
+// Dark Theme Support
+body.dark-theme {
+  .add-user-form {
+    background: $bg-card !important;
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(33, 150, 243, 0.07) !important;
+
+    input,
+    select {
+      background: #23283a !important;
+      color: #fff !important;
+      border: 1.5px solid #4a5066 !important;
+      box-shadow: 0 2px 8px rgba(33, 150, 243, 0.04);
+      font-weight: 500;
+
+      &::placeholder {
+        color: #b0b4bb !important;
+      }
+    }
+
+    button {
+      background-color: $primary !important;
+      color: #fff !important;
+
+      &[type="button"] {
+        background-color: $danger !important;
+      }
+    }
+  }
+
+  .user-table {
+    background: #1e1e2f !important;
+    box-shadow: 0 8px 20px rgba(33, 150, 243, 0.07) !important;
+
+    thead tr {
+      background: #232b3b !important;
+      color: #90caf9 !important;
+    }
+
+    th,
+    td {
+      color: #e3f6fa !important;
+      border-bottom: 1px solid #232b3b !important;
+    }
+
+    tbody tr:hover {
+      background-color: #23283a !important;
+    }
+  }
+
+  .filters {
+    input,
+    select {
+      background: #23283a !important;
+      color: #fff !important;
+      border: 1.5px solid #4a5066 !important;
+
+      &::placeholder {
+        color: #b0b4bb !important;
+      }
+    }
+  }
+
+  .toggle-users-btn {
+    background-color: $primary !important;
+    color: #fff !important;
+  }
+}
+
+// Responsive (اختياري)
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .user-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

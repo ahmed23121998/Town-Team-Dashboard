@@ -1,0 +1,245 @@
+<div class="dashboard-container">
+  <p-toast></p-toast>
+
+  <!-- Time Range Filter -->
+  <div class="filter-section">
+    <p-selectButton
+      [options]="timeRanges"
+      [(ngModel)]="selectedTimeRange"
+      (onOptionClick)="onTimeRangeChange($event)"
+      optionLabel="label"
+      styleClass="time-range-select"
+    ></p-selectButton>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card orders">
+      <div class="stat-icon"><i class="pi pi-shopping-cart"></i></div>
+      <div class="stat-info">
+        <div class="stat-label">Total Orders</div>
+        <div class="stat-value">{{ stats.dailyOrders }}</div>
+      </div>
+    </div>
+    <div class="stat-card revenue">
+      <div class="stat-icon"><i class="pi pi-dollar"></i></div>
+      <div class="stat-info">
+        <div class="stat-label">Total Revenue</div>
+        <div class="stat-value">
+          ${{ stats.dailyRevenue | number : "1.0-0" }}
+        </div>
+      </div>
+    </div>
+    <div class="stat-card customers">
+      <div class="stat-icon"><i class="pi pi-users"></i></div>
+      <div class="stat-info">
+        <div class="stat-label">Customers</div>
+        <div class="stat-value">{{ customersCount }}</div>
+      </div>
+    </div>
+    <div class="stat-card products">
+      <div class="stat-icon"><i class="pi pi-box"></i></div>
+      <div class="stat-info">
+        <div class="stat-label">Products</div>
+        <div class="stat-value">{{ productsCount }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="charts-section charts-2col">
+    <div class="chart-card brands-chart">
+      <div class="chart-title">Top Categories</div>
+      <p-chart
+        type="doughnut"
+        [data]="brandData"
+        [options]="brandOptions"
+      ></p-chart>
+    </div>
+    <div class="chart-card sales-category-chart">
+      <div class="chart-title">Sales by Category</div>
+      <p-chart
+        type="bar"
+        [data]="categoryData"
+        [options]="salesOptions"
+      ></p-chart>
+    </div>
+    <div class="chart-card sales-line-chart">
+      <div class="chart-title">Sales Products</div>
+      <p-chart
+        type="line"
+        [data]="salesData"
+        [options]="salesOptions"
+      ></p-chart>
+    </div>
+    <div class="chart-card revenue-line-chart">
+      <div class="chart-title">Revenue Analysis</div>
+      <p-chart
+        type="line"
+        [data]="revenueData"
+        [options]="salesOptions"
+      ></p-chart>
+    </div>
+  </div>
+
+  <!-- Recent Orders Table -->
+  <div class="recent-orders">
+    <div class="card-header">
+      <h3>Recent Orders</h3>
+    </div>
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of recentOrders">
+          <td>{{ order.id }}</td>
+          <td>{{ order.date | date : "medium" }}</td>
+          <td>{{ order.customer }}</td>
+          <td>${{ order.total | number : "1.0-0" }}</td>
+          <td>
+            <span class="order-status" [ngClass]="order.status">{{
+              order.status
+            }}</span>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button
+                pButton
+                type="button"
+                class="info-action-btn info-action-btn-oval"
+                (click)="showRecentOrderDetails(order)"
+                pTooltip="View Order Details"
+                style="
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  width: 100%;
+                  min-width: 110px;
+                "
+              >
+                <span class="info-label">Info</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Dialog تفاصيل الطلب -->
+  <p-dialog
+    [(visible)]="showRecentOrderDetailsDialog"
+    [style]="{ width: '50vw', maxWidth: '800px' }"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    header="Order Details"
+    [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+    styleClass="product-details-dialog"
+  >
+    <div class="product-details" *ngIf="selectedRecentOrder">
+      <div
+        class="product-list"
+        *ngIf="
+          selectedRecentOrder.products && selectedRecentOrder.products.length
+        "
+      >
+        <div
+          class="product-item-box"
+          *ngFor="let product of selectedRecentOrder.products"
+          style="
+            background: #f8f9fa;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.07);
+            padding: 1.2rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+          "
+        >
+          <div
+            class="product-image"
+            style="
+              min-width: 160px;
+              min-height: 160px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <img
+              *ngIf="product.image"
+              [src]="product.image"
+              [alt]="product.name"
+              style="
+                width: 160px;
+                height: 160px;
+                object-fit: cover;
+                border-radius: 12px;
+                border: 2px solid #e3e8ef;
+                background: #fff;
+              "
+            />
+          </div>
+          <div
+            class="product-details-info"
+            style="flex: 1; display: flex; flex-wrap: wrap; gap: 1.2rem"
+          >
+            <div style="min-width: 180px">
+              <div style="margin-bottom: 0.7rem">
+                <span
+                  style="font-weight: bold; color: #1976d2; font-size: 1.1rem"
+                  >ID:</span
+                >
+                <span
+                  style="color: #222; font-size: 1.08rem; margin-left: 8px"
+                  >{{ product.id }}</span
+                >
+              </div>
+              <div style="margin-bottom: 0.7rem">
+                <span
+                  style="font-weight: bold; color: #1976d2; font-size: 1.1rem"
+                  >Name:</span
+                >
+                <span
+                  style="color: #222; font-size: 1.08rem; margin-left: 8px"
+                  >{{ product.name }}</span
+                >
+              </div>
+            </div>
+            <div style="min-width: 180px">
+              <div style="margin-bottom: 0.7rem">
+                <span
+                  style="font-weight: bold; color: #1976d2; font-size: 1.1rem"
+                  >Price:</span
+                >
+                <span style="color: #222; font-size: 1.08rem; margin-left: 8px"
+                  >${{ product.price }}</span
+                >
+              </div>
+              <div style="margin-bottom: 0.7rem">
+                <span
+                  style="font-weight: bold; color: #1976d2; font-size: 1.1rem"
+                  >Quantity:</span
+                >
+                <span
+                  style="color: #222; font-size: 1.08rem; margin-left: 8px"
+                  >{{ product.quantity }}</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </p-dialog>
+</div>

@@ -1,6 +1,5 @@
 <mat-sidenav-container class="layout-container">
   <mat-sidenav mode="side" opened class="sidenav">
-    <div class="logo"><span class="logo-m">Town</span>-Team</div>
     <mat-nav-list>
       <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
         <mat-icon>dashboard</mat-icon>
@@ -10,13 +9,17 @@
         <mat-icon>shopping_cart</mat-icon>
         Orders
       </a>
-      <a mat-list-item routerLink="/customers" routerLinkActive="active">
-        <mat-icon>people</mat-icon>
+      <a mat-list-item routerLink="/categories" routerLinkActive="active">
+        <mat-icon>category</mat-icon>
         Categories
       </a>
       <a mat-list-item routerLink="/products" routerLinkActive="active">
         <mat-icon>inventory_2</mat-icon>
         Products
+      </a>
+      <a mat-list-item routerLink="/users" routerLinkActive="active">
+        <mat-icon>person</mat-icon>
+        Users
       </a>
       <a
         mat-list-item
@@ -36,7 +39,7 @@
 
   <mat-sidenav-content class="main-content">
     <header *ngIf="!isLoginPage" class="main-header">
-      <div class="logo-mstore"><span class="logo-m">M.</span>store</div>
+      <div class="logo"><span class="logo-m">Town</span>-Team</div>
       <div class="header-actions">
         <button class="theme-toggle" (click)="toggleTheme()">
           <mat-icon>{{

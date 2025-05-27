@@ -14,13 +14,16 @@ import {
 } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ToastModule],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
+  providers: [MessageService],
 })
 export class ProductsComponent implements OnInit, OnDestroy {
   private firestore = inject(Firestore);
@@ -68,8 +71,19 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   searchTerm: string = '';
 
+  constructor(private messageService: MessageService) {}
+
   ngOnInit() {
     this.loadDocIdsForCollection(this.selectedCategory);
+    // دعم استقبال التحديثات من صفحة التصنيفات
+    (window as any).updateProductsCategories = (cats: string[]) => {
+      this.categories = cats;
+      // إعادة تحميل الداتا إذا تغيرت الكاتيجوري المختارة
+      if (!this.categories.includes(this.selectedCategory)) {
+        this.selectedCategory = this.categories[0];
+        this.loadDocIdsForCollection(this.selectedCategory);
+      }
+    };
   }
 
   ngOnDestroy() {
@@ -175,14 +189,24 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   async deleteProduct(id: string) {
-    const productDocRef = doc(
-      this.firestore,
-      this.selectedCategory,
-      this.selectedDocId,
-      this.selectedSubcollection,
-      id
-    );
-    await deleteDoc(productDocRef);
+    try {
+      const productDocRef = doc(
+        this.firestore,
+        this.selectedCategory,
+        this.selectedDocId,
+        this.selectedSubcollection,
+        id
+      );
+      await deleteDoc(productDocRef);
+      await this.loadProducts(
+        this.selectedCategory,
+        this.selectedDocId,
+        this.selectedSubcollection
+      );
+      this.showSuccessToast('Product deleted successfully');
+    } catch (error) {
+      this.showErrorToast('Error deleting product');
+    }
   }
 
   openAddModal() {
@@ -208,26 +232,36 @@ export class ProductsComponent implements OnInit, OnDestroy {
   async addProductFromModal() {
     const price = Number(this.modalForm.price);
     if (!this.modalForm.productName || price <= 0) {
-      alert('Enter the product name and price correctly');
+      this.showErrorToast('Please enter product name and price correctly');
       return;
     }
-    const productsRef = collection(
-      this.firestore,
-      this.selectedCategory,
-      this.selectedDocId,
-      this.selectedSubcollection
-    );
-    const randomOrderId = this.generateRandomOrderId();
-    await addDoc(productsRef, {
-      orderId: randomOrderId,
-      product: { title: this.modalForm.productName },
-      image: { src: this.modalForm.imageUrl },
-      category: this.modalForm.category,
-      price: { amount: price },
-      in_stock: this.modalForm.in_stock,
-      quantity: this.modalForm.quantity,
-    });
-    this.closeAddModal();
+    try {
+      const productsRef = collection(
+        this.firestore,
+        this.selectedCategory,
+        this.selectedDocId,
+        this.selectedSubcollection
+      );
+      const randomOrderId = this.generateRandomOrderId();
+      await addDoc(productsRef, {
+        orderId: randomOrderId,
+        product: { title: this.modalForm.productName },
+        image: { src: this.modalForm.imageUrl },
+        category: this.modalForm.category,
+        price: { amount: price },
+        in_stock: this.modalForm.in_stock,
+        quantity: this.modalForm.quantity,
+      });
+      this.closeAddModal();
+      await this.loadProducts(
+        this.selectedCategory,
+        this.selectedDocId,
+        this.selectedSubcollection
+      );
+      this.showSuccessToast('Product added successfully');
+    } catch (error) {
+      this.showErrorToast('Error adding product');
+    }
   }
 
   openEditModal(product: any) {
@@ -251,20 +285,30 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   async updateProductFromModal() {
     if (!this.editForm.id) return;
-    const productDocRef = doc(
-      this.firestore,
-      this.selectedCategory,
-      this.selectedDocId,
-      this.selectedSubcollection,
-      this.editForm.id
-    );
-    await updateDoc(productDocRef, {
-      product: { title: this.editForm.productName },
-      price: { amount: Number(this.editForm.price) },
-      in_stock: this.editForm.in_stock,
-      quantity: this.editForm.quantity,
-    });
-    this.closeEditModal();
+    try {
+      const productDocRef = doc(
+        this.firestore,
+        this.selectedCategory,
+        this.selectedDocId,
+        this.selectedSubcollection,
+        this.editForm.id
+      );
+      await updateDoc(productDocRef, {
+        product: { title: this.editForm.productName },
+        price: { amount: Number(this.editForm.price) },
+        in_stock: this.editForm.in_stock,
+        quantity: this.editForm.quantity,
+      });
+      this.closeEditModal();
+      await this.loadProducts(
+        this.selectedCategory,
+        this.selectedDocId,
+        this.selectedSubcollection
+      );
+      this.showSuccessToast('Product updated successfully');
+    } catch (error) {
+      this.showErrorToast('Error updating product');
+    }
   }
 
   filteredProducts() {
@@ -278,5 +322,25 @@ export class ProductsComponent implements OnInit, OnDestroy {
         (product.category || '').toLowerCase().includes(term) ||
         (product.orderId || '').toLowerCase().includes(term)
     );
+  }
+
+  showSuccessToast(detail: string) {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail,
+      life: 3000,
+      styleClass: 'custom-toast',
+    });
+  }
+
+  showErrorToast(detail: string) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail,
+      life: 3000,
+      styleClass: 'custom-toast',
+    });
   }
 }

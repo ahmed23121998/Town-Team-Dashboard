@@ -1,0 +1,186 @@
+/* Dropdown menu design */
+.dropdown-menu {
+  position: absolute;
+  left: 0;
+  top: 110%;
+  min-width: 220px;
+  background: #fff;
+  box-shadow: 0 2px 12px #0002;
+  border-radius: 10px;
+  padding: 1rem;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dropdown-menu button {
+  width: 100%;
+  margin: 0.2rem 0;
+  border-radius: 8px;
+  background: var(--primary-light, #e3e7fd);
+  color: var(--primary, #1a237e);
+  font-weight: 600;
+  border: none;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  transition: background 0.2s;
+}
+
+.dropdown-menu button.active-sub {
+  background: var(--primary, #1a237e);
+  color: #fff;
+}
+
+.dropdown-menu button.edit-btn,
+.dropdown-menu button.delete-btn {
+  background: #f5f5f5;
+  color: #1976d2;
+  font-size: 0.95rem;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0.3rem 0.7rem;
+  width: auto;
+  display: inline-block;
+}
+
+.dropdown-menu button.delete-btn {
+  color: #b91c1c;
+}
+
+.dropdown-menu .add-category-btn {
+  background: #e3f9e5;
+  color: #1a7f4f;
+  font-weight: 700;
+  margin-top: 0.7rem;
+}
+
+/* Hide inline subcollections list when dropdown is open */
+.subcollections-list {
+  display: none;
+}
+
+/* Category card design */
+.category-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card, #fff);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(33, 150, 243, 0.08);
+  padding: 18px 28px;
+  margin-bottom: 18px;
+  transition: box-shadow 0.2s;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.category-name {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--primary, #1a237e);
+  flex: 1 1 180px;
+  min-width: 120px;
+}
+
+.category-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+}
+
+.category-actions button {
+  min-width: 90px;
+  height: 38px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px #0001;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-actions .see-btn {
+  background: var(--primary-light, #e3e7fd);
+  color: var(--primary, #1a237e);
+}
+.category-actions .see-btn:hover {
+  background: #c7d2fe;
+}
+
+.category-actions .edit-btn {
+  background: #1976d2;
+  color: #fff;
+}
+.category-actions .edit-btn:hover {
+  background: #1565c0;
+}
+
+.category-actions .delete-btn {
+  background: #ef4444;
+  color: #fff;
+}
+.category-actions .delete-btn:hover {
+  background: #b91c1c;
+}
+
+/* Header styles */
+.categories-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.add-category-btn.styled {
+  background: #1976d2;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 26px;
+  font-size: 1.08rem;
+  box-shadow: 0 2px 8px #0001;
+  transition: background 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  outline: none;
+}
+
+.add-category-btn.styled:hover {
+  background: #1251a3;
+  box-shadow: 0 4px 16px #1976d233;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .dropdown-menu {
+    min-width: 150px;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .category-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 14px 10px;
+  }
+  .category-actions {
+    justify-content: flex-start;
+    gap: 8px;
+  }
+  .category-actions button {
+    min-width: 0;
+    width: 100%;
+    height: 36px;
+    font-size: 0.98rem;
+    padding: 0 10px;
+  }
+}

@@ -1,0 +1,212 @@
+<div class="orders-container">
+  <p-toast></p-toast>
+
+  <p-card>
+    <div class="header-section mb-4">
+      <div class="title-section">
+        <h2>ORDERS</h2>
+      </div>
+    </div>
+
+    <div class="table-controls mb-3">
+      <div class="left-controls">
+        <div class="entries-control">
+          <span>Show</span>
+          <p-select
+            [options]="[
+              { label: '20', value: 20 },
+              { label: '10', value: 10 },
+              { label: '5', value: 5 },
+              { label: '2', value: 2 }
+            ]"
+            [(ngModel)]="pageSize"
+            (onChange)="onPageSizeChange($event)"
+            styleClass="entries-dropdown"
+          ></p-select>
+        </div>
+      </div>
+
+      <div class="right-controls">
+        <div class="search-control">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input
+              type="text"
+              pInputText
+              [(ngModel)]="searchTerm"
+              (input)="onSearch()"
+              placeholder="Search orders..."
+            />
+          </span>
+        </div>
+
+        <div class="status-filter">
+          <p-select
+            [options]="[
+              { label: 'All Statuses', value: 'all' },
+              { label: 'Pending', value: 'pending' },
+              { label: 'Processing', value: 'processing' },
+              { label: 'Shipped', value: 'shipped' },
+              { label: 'Delivered', value: 'delivered' },
+              { label: 'Cancelled', value: 'cancelled' }
+            ]"
+            [(ngModel)]="statusFilter"
+            (onChange)="onStatusFilterChange()"
+            placeholder="Filter by Status"
+            styleClass="status-dropdown"
+          ></p-select>
+
+          <button
+            pButton
+            type="button"
+            label="Clear"
+            class="p-button-outlined p-button-sm"
+            (click)="clearFilters()"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <p-table
+      [value]="filteredOrders"
+      [loading]="isLoading"
+      styleClass="p-datatable-orders"
+      [rows]="pageSize"
+      [totalRecords]="totalItems"
+      [paginator]="true"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [(first)]="first"
+      (onPageChange)="onPageChange($event)"
+      responsiveLayout="scroll"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Order ID</th>
+          <th>Date</th>
+          <th>Customer Info</th>
+          <th>Quantity</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Actions</th>
+          <th>Details</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-order>
+        <tr>
+          <td>
+            <span class="order-id">{{ order.id }}</span>
+          </td>
+          <td>
+            <span class="order-date">{{
+              order.orderDate | date : "medium"
+            }}</span>
+          </td>
+          <td>
+            <div class="customer-info">
+              <span class="customer-name">{{ order.customerName }}</span>
+              <span class="customer-email">{{ order.customerEmail }}</span>
+              <span class="customer-phone">{{ order.customerPhone }}</span>
+            </div>
+          </td>
+          <td>
+            <span class="order-quantity">
+              {{ getOrderTotalQuantity(order) }}
+            </span>
+          </td>
+          <td>
+            <span class="order-total">${{ calculateTotalPrice(order) }}</span>
+          </td>
+          <td>
+            <p-tag
+              [value]="order.status"
+              [severity]="getOrderStatusClass(order.status)"
+            ></p-tag>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button
+                pButton
+                type="button"
+                [label]="order.status"
+                class="p-button-sm status-button"
+                (click)="showStatusOptions($event, order)"
+              ></button>
+            </div>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button
+                pButton
+                type="button"
+                class="info-action-btn info-action-btn-oval"
+                (click)="showProductDetails(order)"
+              >
+                <i class="pi pi-info-circle"></i>
+                <span class="info-label">info</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="8" class="text-center p-4">
+            <div class="empty-message">
+              <i class="pi pi-inbox"></i>
+              <span>No orders found</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="paginatorright">
+        <div class="pagination-info">
+          Page {{ getCurrentPage() }} of {{ getTotalPages() }}
+        </div>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
+
+<!-- Update Product Details Dialog -->
+<p-dialog
+  [(visible)]="showProductDetailsDialog"
+  [style]="{ width: '50vw', maxWidth: '800px' }"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  header="Product Details"
+  [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+  [styleClass]="'product-details-dialog'"
+>
+  <div class="product-details" *ngIf="selectedOrder">
+    <div class="product-list">
+      <div class="product-item" *ngFor="let product of selectedOrder.products">
+        <div class="product-image">
+          <img [src]="product.image" [alt]="product.name" />
+        </div>
+        <div class="product-info">
+          <h3>{{ product.name }}</h3>
+          <div class="product-details-grid">
+            <div class="detail-item">
+              <span class="label">Category:</span>
+              <span class="value">{{ product.category || "N/A" }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Price:</span>
+              <span class="value">${{ product.price }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Quantity:</span>
+              <span class="value">{{ product.quantity }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Subtotal:</span>
+              <span class="value">${{ product.price * product.quantity }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>

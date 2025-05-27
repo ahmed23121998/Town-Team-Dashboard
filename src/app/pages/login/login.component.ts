@@ -10,7 +10,7 @@ import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { Firestore, doc, setDoc, getDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-login',
@@ -35,6 +35,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       document.body.classList.add('login-page');
+      // إزالة الوضع الليلي عند الدخول لصفحة تسجيل الدخول
+      document.body.classList.remove('dark-theme');
+      localStorage.setItem('theme', 'light');
     }
   }
 
@@ -53,18 +56,40 @@ export class LoginComponent implements OnInit, OnDestroy {
       );
       const user = userCredential.user;
 
-      // Save user data to settings
-      const userDoc = doc(this.firestore, 'users', user.uid);
-      await setDoc(
-        userDoc,
-        {
-          email: user.email,
-          firstName: user.displayName?.split(' ')[0] || '',
-          lastName: user.displayName?.split(' ')[1] || '',
-          imageUrl: user.photoURL || 'assets/Ahmed.jpg',
-        },
-        { merge: true }
-      );
+      // جلب بيانات المستخدم من Firestore
+      const userDocRef = doc(this.firestore, 'users', user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+      const userData = userDocSnap.exists() ? userDocSnap.data() : null;
+
+      // عند أول تسجيل دخول، اجعل الدور Admin إذا لم يكن موجودًا
+      if (!userData || !('role' in userData)) {
+        await setDoc(
+          userDocRef,
+          {
+            email: user.email,
+            firstName: user.displayName?.split(' ')[0] || '',
+            lastName: user.displayName?.split(' ')[1] || '',
+            imageUrl: user.photoURL || 'assets/Ahmed.jpg',
+            role: 'admin',
+          },
+          { merge: true }
+        );
+      } else if (userData['role'] !== 'admin') {
+        this.error = 'You must be an admin to log in';
+        return;
+      } else {
+        // تحديث بيانات المستخدم إذا كان بالفعل admin
+        await setDoc(
+          userDocRef,
+          {
+            email: user.email,
+            firstName: user.displayName?.split(' ')[0] || '',
+            lastName: user.displayName?.split(' ')[1] || '',
+            imageUrl: user.photoURL || 'assets/Ahmed.jpg',
+          },
+          { merge: true }
+        );
+      }
 
       this.router.navigate(['/products']);
     } catch (err: any) {

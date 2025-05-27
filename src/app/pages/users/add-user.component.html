@@ -1,0 +1,149 @@
+<div
+  style="display: flex; justify-content: center; gap: 16px; margin-bottom: 20px"
+>
+  <button
+    type="button"
+    class="toggle-users-btn"
+    (click)="showUsers = !showUsers"
+  >
+    {{ showUsers ? "Hide Users" : "Show Users" }}
+  </button>
+  <button
+    type="button"
+    class="toggle-users-btn"
+    (click)="showAddUser = !showAddUser"
+  >
+    {{ showAddUser ? "Hide Form" : "Add User" }}
+  </button>
+</div>
+
+<div *ngIf="showAddUser">
+  <form (ngSubmit)="addUser()" #userForm="ngForm" class="add-user-form">
+    <input
+      type="text"
+      placeholder="Name"
+      [(ngModel)]="name"
+      name="name"
+      required
+    />
+    <input
+      type="email"
+      placeholder="Email"
+      [(ngModel)]="email"
+      name="email"
+      required
+    />
+    <input
+      *ngIf="!editingUserId"
+      type="password"
+      placeholder="Password"
+      [(ngModel)]="password"
+      name="password"
+      required
+    />
+    <select [(ngModel)]="role" name="role" required>
+      <option value="" disabled selected>Select Role</option>
+      <option value="admin">Admin</option>
+      <option value="user">User</option>
+    </select>
+    <button type="submit" [disabled]="loading">
+      {{
+        loading
+          ? editingUserId
+            ? "Saving..."
+            : "Adding..."
+          : editingUserId
+          ? "Save User"
+          : "Add User"
+      }}
+    </button>
+    <button
+      type="button"
+      *ngIf="editingUserId"
+      (click)="clearForm()"
+      style="margin-left: 10px; background-color: #f44336"
+    >
+      Cancel
+    </button>
+  </form>
+</div>
+
+<div *ngIf="showUsers">
+  <div class="filters">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Search by name or email"
+    />
+    <select [(ngModel)]="filterRole">
+      <option value="all">All Roles</option>
+      <option value="admin">Admin</option>
+      <option value="user">User</option>
+    </select>
+  </div>
+
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th (click)="sortBy('name')">Name</th>
+        <th (click)="sortBy('email')">Email</th>
+        <th (click)="sortBy('role')">Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of filteredUsers()">
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>
+          <button class="edit-btn" (click)="editUser(user)">
+            <span class="material-icons">edit</span> Edit
+          </button>
+          <button class="delete-btn" (click)="deleteUser(user)">
+            <span class="material-icons">delete</span> Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p-toast position="top-center"></p-toast>
+
+<!-- Edit User Modal -->
+<div
+  class="modal-backdrop"
+  *ngIf="showEditModal"
+  (click)="closeEditModal()"
+></div>
+<div class="modal" *ngIf="showEditModal" (click)="$event.stopPropagation()">
+  <form (submit)="updateUserFromModal(); $event.preventDefault()">
+    <h3>Edit User</h3>
+    <input
+      type="text"
+      placeholder="Name"
+      [(ngModel)]="editForm.name"
+      name="editUserName"
+      required
+    />
+    <input
+      type="email"
+      placeholder="Email"
+      [(ngModel)]="editForm.email"
+      name="editUserEmail"
+      required
+      readonly
+    />
+    <select [(ngModel)]="editForm.role" name="editUserRole" required>
+      <option value="" disabled>Select Role</option>
+      <option value="admin">Admin</option>
+      <option value="user">User</option>
+    </select>
+    <div class="modal-actions">
+      <button type="submit" class="save-btn">Update</button>
+      <button type="button" class="cancel-btn" (click)="closeEditModal()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
