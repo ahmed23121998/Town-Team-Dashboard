@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
@@ -18,6 +18,7 @@ import {
   createUserWithEmailAndPassword as createTempUser,
 } from 'firebase/auth';
 import { environment } from '../../../environments/environment';
+import { isPlatformServer } from '@angular/common';
 
 @Component({
   selector: 'app-add-user',
@@ -55,10 +56,15 @@ export class AddUserComponent implements OnInit {
   constructor(
     private auth: Auth,
     private firestore: Firestore,
-    private messageService: MessageService
+    private messageService: MessageService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
+    if (isPlatformServer(this.platformId)) {
+      // لا تقم بجلب بيانات المستخدمين أثناء SSR لتجنب مشاكل الـ timeout
+      return;
+    }
     this.loadUsers();
   }
 

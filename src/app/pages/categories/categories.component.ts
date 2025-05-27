@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   Firestore,
@@ -11,6 +11,7 @@ import {
   doc,
   setDoc,
 } from '@angular/fire/firestore';
+import { isPlatformServer } from '@angular/common';
 
 @Component({
   selector: 'app-categories',
@@ -56,9 +57,13 @@ export class CategoriesComponent implements OnInit {
   // Track which document's dropdown is open
   docDropdownOpen: string | null = null;
 
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore, @Inject(PLATFORM_ID) private platformId: Object) {}
 
   async ngOnInit() {
+    if (isPlatformServer(this.platformId)) {
+      // لا تقم بجلب بيانات التصنيفات أثناء SSR لتجنب مشاكل الـ timeout
+      return;
+    }
     await this.loadCategoriesFromFirebase();
   }
 

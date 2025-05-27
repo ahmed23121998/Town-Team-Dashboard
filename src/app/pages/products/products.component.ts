@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, inject, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, NgZone, Inject, PLATFORM_ID } from '@angular/core';
 import {
   collection,
   addDoc,
@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { isPlatformServer } from '@angular/common';
 
 @Component({
   selector: 'app-products',
@@ -71,9 +72,13 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   searchTerm: string = '';
 
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService, @Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngOnInit() {
+    if (isPlatformServer(this.platformId)) {
+      // لا تقم بجلب بيانات المنتجات أثناء SSR لتجنب مشاكل الـ timeout
+      return;
+    }
     this.loadDocIdsForCollection(this.selectedCategory);
     // دعم استقبال التحديثات من صفحة التصنيفات
     if (typeof window !== 'undefined') {
