@@ -103,7 +103,7 @@
           <td>{{ order.id }}</td>
           <td>{{ order.date | date : "medium" }}</td>
           <td>{{ order.customer }}</td>
-          <td>${{ order.total | number : "1.0-0" }}</td>
+          <td>EGP {{ order.total | number : "1.0-0" }}</td>
           <td>
             <span class="order-status" [ngClass]="order.status">{{
               order.status
@@ -208,11 +208,10 @@
               <div style="margin-bottom: 0.7rem">
                 <span
                   style="font-weight: bold; color: #1976d2; font-size: 1.1rem"
-                  >Name:</span
+                  >Price:</span
                 >
-                <span
-                  style="color: #222; font-size: 1.08rem; margin-left: 8px"
-                  >{{ product.name }}</span
+                <span style="color: #222; font-size: 1.08rem; margin-left: 8px"
+                  >EGP {{ product.price }}</span
                 >
               </div>
             </div>
@@ -220,10 +219,11 @@
               <div style="margin-bottom: 0.7rem">
                 <span
                   style="font-weight: bold; color: #1976d2; font-size: 1.1rem"
-                  >Price:</span
+                  >Name:</span
                 >
-                <span style="color: #222; font-size: 1.08rem; margin-left: 8px"
-                  >${{ product.price }}</span
+                <span
+                  style="color: #222; font-size: 1.08rem; margin-left: 8px"
+                  >{{ product.name }}</span
                 >
               </div>
               <div style="margin-bottom: 0.7rem">

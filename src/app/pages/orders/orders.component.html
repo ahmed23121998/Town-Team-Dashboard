@@ -115,7 +115,7 @@
             </span>
           </td>
           <td>
-            <span class="order-total">${{ calculateTotalPrice(order) }}</span>
+            <span class="order-total">EGP {{ calculateTotalPrice(order) }}</span>
           </td>
           <td>
             <p-tag
@@ -186,23 +186,24 @@
           <img [src]="product.image" [alt]="product.name" />
         </div>
         <div class="product-info">
-          <h3>{{ product.name }}</h3>
           <div class="product-details-grid">
             <div class="detail-item">
-              <span class="label">Category:</span>
-              <span class="value">{{ product.category || "N/A" }}</span>
+              <span class="label">Product ID:</span>
+              <span class="value">{{ product.id }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Product Name</span>
+              <span class="value">
+                {{ product.name }}
+              </span>
             </div>
             <div class="detail-item">
               <span class="label">Price:</span>
-              <span class="value">${{ product.price }}</span>
+              <span class="value">EGP {{ product.price }}</span>
             </div>
             <div class="detail-item">
               <span class="label">Quantity:</span>
               <span class="value">{{ product.quantity }}</span>
-            </div>
-            <div class="detail-item">
-              <span class="label">Subtotal:</span>
-              <span class="value">${{ product.price * product.quantity }}</span>
             </div>
           </div>
         </div>

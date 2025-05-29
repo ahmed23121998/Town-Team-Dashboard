@@ -187,7 +187,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           let orderTotal = 0;
           const products = cartItems.map((item: any) => ({
             id: item.id || item.productId || '',
-            name: item.title || item.name || 'No Name',
+            name: item.title || 'No Name',
             quantity: item.quantity || 0,
             price: item.price || item.unitPrice || 0,
             image:
