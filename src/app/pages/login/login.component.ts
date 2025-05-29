@@ -10,7 +10,16 @@ import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { Firestore, doc, setDoc, getDoc } from '@angular/fire/firestore';
+import {
+  Firestore,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  getDocs,
+  QueryDocumentSnapshot,
+  DocumentData,
+} from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +45,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       if (typeof document !== 'undefined') {
         document.body.classList.add('login-page');
-        // إزالة الوضع الليلي عند الدخول لصفحة تسجيل الدخول
         document.body.classList.remove('dark-theme');
       }
       if (typeof window !== 'undefined') {
@@ -62,29 +70,37 @@ export class LoginComponent implements OnInit, OnDestroy {
       );
       const user = userCredential.user;
 
-      // جلب بيانات المستخدم من Firestore
       const userDocRef = doc(this.firestore, 'users', user.uid);
       const userDocSnap = await getDoc(userDocRef);
       const userData = userDocSnap.exists() ? userDocSnap.data() : null;
 
-      // عند أول تسجيل دخول، اجعل الدور Admin إذا لم يكن موجودًا
-      if (!userData || !('role' in userData)) {
+      // التحقق من وجود Admin
+      const usersSnapshot = await getDocs(collection(this.firestore, 'users'));
+      const hasAdmin = usersSnapshot.docs.some(
+        (doc: QueryDocumentSnapshot<DocumentData>) =>
+          doc.data()['role'] === 'admin'
+      );
+
+      // تعيين أول مستخدم كـ Admin إذا لم يوجد
+      if (!hasAdmin) {
         await setDoc(
           userDocRef,
           {
+            uid: user.uid,
             email: user.email,
             firstName: user.displayName?.split(' ')[0] || '',
             lastName: user.displayName?.split(' ')[1] || '',
             imageUrl: user.photoURL || 'assets/Ahmed.jpg',
             role: 'admin',
+            createdAt: new Date().toISOString(),
           },
           { merge: true }
         );
-      } else if (userData['role'] !== 'admin') {
+      } else if (!userData || userData['role'] !== 'admin') {
         this.error = 'You must be an admin to log in';
         return;
       } else {
-        // تحديث بيانات المستخدم إذا كان بالفعل admin
+        // المستخدم Admin - تحديث البيانات
         await setDoc(
           userDocRef,
           {
@@ -97,9 +113,34 @@ export class LoginComponent implements OnInit, OnDestroy {
         );
       }
 
-      this.router.navigate(['/products']);
+      this.router.navigate(['/dashboard']);
     } catch (err: any) {
       this.error = 'You must be an admin to log in';
     }
+  }
+  async addAdminManually() {
+    const user = this.auth.currentUser;
+
+    if (!user) {
+      this.error = 'سجّل دخول أولاً قبل تفعيل الـ Admin';
+      return;
+    }
+
+    const userDocRef = doc(this.firestore, 'users', user.uid);
+    await setDoc(
+      userDocRef,
+      {
+        uid: user.uid,
+        email: user.email,
+        firstName: user.displayName?.split(' ')[0] || '',
+        lastName: user.displayName?.split(' ')[1] || '',
+        imageUrl: user.photoURL || 'assets/Ahmed.jpg',
+        role: 'admin',
+        createdAt: new Date().toISOString(),
+      },
+      { merge: true }
+    );
+
+    this.error = '✅ تم تعيينك كـ Admin. أعد تسجيل الدخول.';
   }
 }

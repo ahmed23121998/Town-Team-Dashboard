@@ -1,8 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
-import { Auth, updatePassword, EmailAuthProvider, reauthenticateWithCredential, onAuthStateChanged, } from '@angular/fire/auth';
+import {
+  Auth,
+  updatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  onAuthStateChanged,
+} from '@angular/fire/auth';
 import { ThemeService } from '../../services/theme.service';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil, debounceTime, Observable } from 'rxjs';

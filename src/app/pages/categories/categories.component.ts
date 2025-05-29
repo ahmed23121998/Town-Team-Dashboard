@@ -57,7 +57,10 @@ export class CategoriesComponent implements OnInit {
   // Track which document's dropdown is open
   docDropdownOpen: string | null = null;
 
-  constructor(private firestore: Firestore, @Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    private firestore: Firestore,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   async ngOnInit() {
     if (isPlatformServer(this.platformId)) {
@@ -85,7 +88,10 @@ export class CategoriesComponent implements OnInit {
         new Set([...mainCollections, ...dynamicCategories])
       );
       // مزامنة مع صفحة المنتجات إذا كانت متاحة
-      if (typeof window !== 'undefined' && (window as any).updateProductsCategories) {
+      if (
+        typeof window !== 'undefined' &&
+        (window as any).updateProductsCategories
+      ) {
         (window as any).updateProductsCategories(this.categories);
       }
     } catch (err) {

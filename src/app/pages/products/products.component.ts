@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, inject, NgZone, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  NgZone,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import {
   collection,
   addDoc,
@@ -72,7 +80,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   searchTerm: string = '';
 
-  constructor(private messageService: MessageService, @Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    private messageService: MessageService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit() {
     if (isPlatformServer(this.platformId)) {
